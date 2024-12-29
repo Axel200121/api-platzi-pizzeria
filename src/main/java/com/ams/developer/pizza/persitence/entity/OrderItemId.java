@@ -1,17 +1,8 @@
 package com.ams.developer.pizza.persitence.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.io.Serializable;
 import java.util.Objects;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class OrderItemId implements Serializable {
     private Integer idOrder;
     private Integer idItem;
@@ -27,5 +18,22 @@ public class OrderItemId implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(idOrder, idItem);
+    }
+
+
+    public Integer getIdOrder() {
+        return idOrder;
+    }
+
+    public void setIdOrder(Integer idOrder) {
+        this.idOrder = idOrder;
+    }
+
+    public Integer getIdItem() {
+        return idItem;
+    }
+
+    public void setIdItem(Integer idItem) {
+        this.idItem = idItem;
     }
 }

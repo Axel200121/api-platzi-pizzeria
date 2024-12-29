@@ -1,18 +1,11 @@
 package com.ams.developer.pizza.persitence.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "pizza_order")
-@Setter
-@Getter
-@NoArgsConstructor
 public class PizzaOrderEntity {
 
     @Id
@@ -41,4 +34,68 @@ public class PizzaOrderEntity {
 
     @OneToMany(mappedBy = "order")
     private List<OrderItemEntity> items;
+
+    public Integer getIdOrder() {
+        return idOrder;
+    }
+
+    public void setIdOrder(Integer idOrder) {
+        this.idOrder = idOrder;
+    }
+
+    public String getIdCostumer() {
+        return idCostumer;
+    }
+
+    public void setIdCostumer(String idCostumer) {
+        this.idCostumer = idCostumer;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public String getAddtionalNotes() {
+        return addtionalNotes;
+    }
+
+    public void setAddtionalNotes(String addtionalNotes) {
+        this.addtionalNotes = addtionalNotes;
+    }
+
+    public CustomerEntity getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerEntity customer) {
+        this.customer = customer;
+    }
+
+    public List<OrderItemEntity> getItems() {
+        return items;
+    }
+
+    public void setItems(List<OrderItemEntity> items) {
+        this.items = items;
+    }
 }

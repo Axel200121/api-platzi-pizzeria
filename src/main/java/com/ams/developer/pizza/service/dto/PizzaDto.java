@@ -1,33 +1,35 @@
-package com.ams.developer.pizza.persitence.entity;
+package com.ams.developer.pizza.service.dto;
 
-import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
-@Entity
-@Table(name = "pizza")
-public class PizzaEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_pizza",nullable = false)
+public class PizzaDto {
     private Integer idPizza;
 
-    @Column(nullable = false, length = 30, unique = true)
+    @NotNull(message = "El nombre no puede ser nulo")
+    @NotBlank(message = "El nombe no puede estar vacio")
     private String name;
 
-    @Column(nullable = false, length = 150)
+    @NotNull(message = "La descripción no puede ser nulo")
+    @NotBlank(message = "La descripción no puede estar vacio")
     private String description;
 
-    @Column(nullable = false, columnDefinition = "Decimal(5,2)")
+    @NotNull(message = "El precio no puede ser nulo")
+    @DecimalMin(value = "0.0", inclusive = false, message = "El precio debe ser mayor que 0")
     private Double price;
 
-    @Column(columnDefinition = "SMALLINT")
+    @NotNull(message = "El campo vegetariano no puede ser nulo")
     private Boolean vegetarian;
 
-    @Column(columnDefinition = "SMALLINT")
+    @NotNull(message = "El campo vegano no puede ser nulo")
     private Boolean vegan;
 
-    @Column(columnDefinition = "SMALLINT", nullable = false)
+    @NotNull(message = "El campo disponible no puede ser nulo")
     private Boolean available;
+
+    public PizzaDto() {
+    }
 
     public Integer getIdPizza() {
         return idPizza;
@@ -83,5 +85,18 @@ public class PizzaEntity {
 
     public void setAvailable(Boolean available) {
         this.available = available;
+    }
+
+    @Override
+    public String toString() {
+        return "PizzaDto{" +
+                "idPizza=" + idPizza +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", vegetarian=" + vegetarian +
+                ", vegan=" + vegan +
+                ", available=" + available +
+                '}';
     }
 }

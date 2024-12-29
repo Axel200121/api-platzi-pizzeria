@@ -1,16 +1,10 @@
 package com.ams.developer.pizza.persitence.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "order_item")
 @IdClass(OrderItemId.class)
-@Setter
-@Getter
-@NoArgsConstructor
 public class OrderItemEntity {
 
 
@@ -39,7 +33,59 @@ public class OrderItemEntity {
     @JoinColumn(name = "id_order", referencedColumnName = "id_order", insertable = false, updatable = false)
     private PizzaOrderEntity order;
 
+    public Integer getIdItem() {
+        return idItem;
+    }
 
+    public void setIdItem(Integer idItem) {
+        this.idItem = idItem;
+    }
 
+    public Integer getIdOrder() {
+        return idOrder;
+    }
 
+    public void setIdOrder(Integer idOrder) {
+        this.idOrder = idOrder;
+    }
+
+    public Integer getIdPizza() {
+        return idPizza;
+    }
+
+    public void setIdPizza(Integer idPizza) {
+        this.idPizza = idPizza;
+    }
+
+    public Double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Double quantity) {
+        this.quantity = quantity;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public PizzaEntity getPizza() {
+        return pizza;
+    }
+
+    public void setPizza(PizzaEntity pizza) {
+        this.pizza = pizza;
+    }
+
+    public PizzaOrderEntity getOrder() {
+        return order;
+    }
+
+    public void setOrder(PizzaOrderEntity order) {
+        this.order = order;
+    }
 }
