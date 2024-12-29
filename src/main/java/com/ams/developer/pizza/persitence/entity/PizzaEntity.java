@@ -29,6 +29,9 @@ public class PizzaEntity {
     @Column(columnDefinition = "SMALLINT", nullable = false)
     private Boolean available;
 
+    @Column(name = "url_image")
+    private String urlImage;
+
     public Integer getIdPizza() {
         return idPizza;
     }
@@ -83,5 +86,13 @@ public class PizzaEntity {
 
     public void setAvailable(Boolean available) {
         this.available = available;
+    }
+
+    public String getUrlImage() {
+        return urlImage;
+    }
+
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
     }
 }

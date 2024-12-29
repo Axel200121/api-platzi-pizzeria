@@ -3,6 +3,7 @@ package com.ams.developer.pizza.service.dto;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.web.multipart.MultipartFile;
 
 public class PizzaDto {
     private Integer idPizza;
@@ -27,6 +28,10 @@ public class PizzaDto {
 
     @NotNull(message = "El campo disponible no puede ser nulo")
     private Boolean available;
+
+    private String urlImage;
+
+    private MultipartFile image;
 
     public PizzaDto() {
     }
@@ -87,6 +92,22 @@ public class PizzaDto {
         this.available = available;
     }
 
+    public String getUrlImage() {
+        return urlImage;
+    }
+
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
+    }
+
+    public MultipartFile getImage() {
+        return image;
+    }
+
+    public void setImage(MultipartFile image) {
+        this.image = image;
+    }
+
     @Override
     public String toString() {
         return "PizzaDto{" +
@@ -97,6 +118,8 @@ public class PizzaDto {
                 ", vegetarian=" + vegetarian +
                 ", vegan=" + vegan +
                 ", available=" + available +
+                ", urlImage='" + urlImage + '\'' +
+                ", image=" + image +
                 '}';
     }
 }

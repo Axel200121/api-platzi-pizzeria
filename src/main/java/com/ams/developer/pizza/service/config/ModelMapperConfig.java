@@ -1,4 +1,4 @@
-package com.ams.developer.pizza.web.config;
+package com.ams.developer.pizza.service.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

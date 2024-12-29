@@ -3,6 +3,7 @@ package com.ams.developer.pizza.service.impl;
 import com.ams.developer.pizza.persitence.entity.PizzaEntity;
 import com.ams.developer.pizza.persitence.repository.PizzaListRepository;
 import com.ams.developer.pizza.persitence.repository.PizzaRepository;
+import com.ams.developer.pizza.service.CloudinaryService;
 import com.ams.developer.pizza.service.PizzaService;
 import com.ams.developer.pizza.service.dto.ApiResponseDto;
 import com.ams.developer.pizza.service.dto.Pageable.ContentPageDto;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +39,9 @@ public class PizzaServiceImpl implements PizzaService {
     private PizzaRepository pizzaRepository;
 
     @Autowired
+    private CloudinaryService cloudinaryService;
+
+    @Autowired
     private PizzaMapper pizzaMapper;
 
 
@@ -48,7 +53,7 @@ public class PizzaServiceImpl implements PizzaService {
             if (pizzas.isEmpty())
                 return new ApiResponseDto(HttpStatus.BAD_REQUEST.value(),"No hay pizzas registradas",null);
 
-            ContentPageDto pizzaContentPageDto = this.fromatPageablePizzas(pizzas);
+            ContentPageDto pizzaContentPageDto = this.formatPageablePizzas(pizzas);
             List<Object> pizzaDtos = pizzas.getContent().stream().map(pizzaMapper::convertPizzaDto).collect(Collectors.toList());
             pizzaContentPageDto.setContent(pizzaDtos);
             return new ApiResponseDto(HttpStatus.OK.value(),"Lista de pizzas",pizzaContentPageDto);
@@ -94,6 +99,8 @@ public class PizzaServiceImpl implements PizzaService {
             if (existingPizza.isPresent())
                 return new ApiResponseDto(HttpStatus.BAD_REQUEST.value(), "Ya existe una pizza con ese mismo nombre", null);
 
+            String imageUrl = this.cloudinaryService.uploadFile(pizzaDto.getImage());
+            pizzaDto.setUrlImage(imageUrl);
             PizzaEntity pizzaSave = this.pizzaRepository.save(this.pizzaMapper.convertPizzaEntity(pizzaDto));
             return new ApiResponseDto(HttpStatus.CREATED.value(),"Pizza creada correctamente",this.pizzaMapper.convertPizzaDto(pizzaSave));
 
@@ -115,12 +122,15 @@ public class PizzaServiceImpl implements PizzaService {
             if (pizzaBD == null)
                 return new ApiResponseDto(HttpStatus.BAD_REQUEST.value(),"No existe esta pizza",null);
 
+            this.cloudinaryService.deleteImage(this.splitPublicId(pizzaBD.getUrlImage()));
+            String imageUrl = this.cloudinaryService.uploadFile(pizzaDto.getImage());
             pizzaBD.setName(pizzaDto.getName());
             pizzaBD.setDescription(pizzaDto.getDescription());
             pizzaBD.setPrice(pizzaDto.getPrice());
             pizzaBD.setVegetarian(pizzaDto.getVegetarian());
             pizzaBD.setVegan(pizzaDto.getVegan());
             pizzaBD.setAvailable(pizzaDto.getAvailable());
+            pizzaBD.setUrlImage(imageUrl);
             PizzaEntity pizzaEdit = this.pizzaRepository.save(pizzaBD);
             return new ApiResponseDto(HttpStatus.CREATED.value(),"Pizza actualizada correctamente",this.pizzaMapper.convertPizzaDto(pizzaEdit));
 
@@ -138,6 +148,8 @@ public class PizzaServiceImpl implements PizzaService {
             if (pizzaBd == null)
                 return new ApiResponseDto(HttpStatus.BAD_REQUEST.value(),"No existe esta pizza",null);
 
+            String publicId = this.splitPublicId(pizzaBd.getUrlImage());
+            this.cloudinaryService.deleteImage(publicId);
             this.pizzaRepository.deleteById(idPizza);
             return new ApiResponseDto(HttpStatus.OK.value(),"Pizza eliminada correctamente",null);
 
@@ -146,6 +158,15 @@ public class PizzaServiceImpl implements PizzaService {
         } catch (Exception e) {
             return new ApiResponseDto(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Ocurrió un error inesperado", e.getMessage());
         }
+    }
+
+    private String splitPublicId(String urlImage){
+        // Dividir la URL para obtener la última sección después del último '/'
+        String[] urlParts = urlImage.split("/");
+        String filename = urlParts[urlParts.length - 1];
+        // Dividir el nombre del archivo en la parte antes del punto
+        String[] filenameParts = filename.split("\\.");
+        return filenameParts[0];
     }
 
     private List<ValidateFieldDto> validateInputs(BindingResult bindingResult){
@@ -161,7 +182,7 @@ public class PizzaServiceImpl implements PizzaService {
         return validateFieldDTOList;
     }
 
-    private ContentPageDto fromatPageablePizzas(Page<PizzaEntity> pizzas){
+    private ContentPageDto formatPageablePizzas(Page<PizzaEntity> pizzas){
         ContentPageDto pizzaContentPageDto = new ContentPageDto();
 
         PageableDto pageableDto = new PageableDto();

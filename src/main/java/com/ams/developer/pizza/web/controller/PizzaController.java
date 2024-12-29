@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/pizzas")
@@ -34,14 +34,14 @@ public class PizzaController {
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
     }
 
-    @PostMapping("/save")
-    public ResponseEntity<ApiResponseDto> savePizza(@RequestBody PizzaDto pizzaDto, BindingResult bindingResult){
-        ApiResponseDto response = this.pizzaService.savePizza(pizzaDto, bindingResult);
+    @PostMapping(value = "/save")
+    public ResponseEntity<ApiResponseDto> savePizza(@ModelAttribute PizzaDto pizzaDto, BindingResult bindingResult){
+        ApiResponseDto response = this.pizzaService.savePizza(pizzaDto,bindingResult);
         return new ResponseEntity<>(response,HttpStatus.valueOf(response.getStatusCode()));
     }
 
     @PutMapping("/update/{idPizza}")
-    public ResponseEntity<ApiResponseDto> updatePizza(@PathVariable int idPizza, @RequestBody PizzaDto pizzaDto, BindingResult bindingResult){
+    public ResponseEntity<ApiResponseDto> updatePizza(@PathVariable int idPizza, @ModelAttribute PizzaDto pizzaDto, BindingResult bindingResult){
         ApiResponseDto response = this.pizzaService.updatePizza(idPizza, pizzaDto, bindingResult);
         return new ResponseEntity<>(response,HttpStatus.valueOf(response.getStatusCode()));
     }
