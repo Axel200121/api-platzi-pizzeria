@@ -3,7 +3,6 @@ import com.ams.developer.pizza.persitence.entity.PizzaEntity;
 import com.ams.developer.pizza.service.dto.ApiResponseDto;
 import com.ams.developer.pizza.service.dto.PizzaDto;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.multipart.MultipartFile;
 
 
 public interface PizzaService {
