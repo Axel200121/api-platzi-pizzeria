@@ -102,4 +102,21 @@ public class ContentPageDto {
     public void setEmpty(Boolean empty) {
         this.empty = empty;
     }
+
+    @Override
+    public String toString() {
+        return "ContentPageDto{" +
+                "content=" + content +
+                ", pageable=" + pageable +
+                ", last=" + last +
+                ", totalElements=" + totalElements +
+                ", totalPages=" + totalPages +
+                ", first=" + first +
+                ", size=" + size +
+                ", number=" + number +
+                ", sort=" + sort +
+                ", numberOfElements=" + numberOfElements +
+                ", empty=" + empty +
+                '}';
+    }
 }

@@ -1,5 +1,6 @@
 package com.ams.developer.pizza.persitence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -27,10 +28,12 @@ public class OrderItemEntity {
 
     @OneToOne
     @JoinColumn(name = "id_pizza", referencedColumnName = "id_pizza", insertable = false, updatable = false)
+    @JsonIgnore
     private PizzaEntity pizza;
 
     @ManyToOne
     @JoinColumn(name = "id_order", referencedColumnName = "id_order", insertable = false, updatable = false)
+    @JsonIgnore
     private PizzaOrderEntity order;
 
     public Integer getIdItem() {
